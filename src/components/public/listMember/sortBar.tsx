@@ -1,6 +1,6 @@
 'use client'
 import type { Key } from "@heroui/react";
-import { Autocomplete, EmptyState, Label, ListBox } from "@heroui/react";
+import { ComboBox, EmptyState, Label, ListBox } from "@heroui/react";
 import {Input, TextField} from "@heroui/react";
 import React, { useEffect, useState } from 'react'
 
@@ -30,20 +30,18 @@ function SortBar({ dropdownValue, setDropdownValue,serachValue, setSearchValue }
     return (
         <div className="w-full flex sm:flex-row flex-col md:items-center justify-between gap-2">
             <div className=" order-2 sm:order-1">
-                <Autocomplete
-                    className="md:w-50 w-full"
+                <ComboBox
+                    className=" w-full"
                     allowsEmptyCollection={false}
-                    selectionMode="single"
                     selectedKey={String(dropdownValue)}
                     onSelectionChange={handleChange}
                 >
                     <Label>จำนวนแถวต่อหน้า</Label>
-                    <Autocomplete.Trigger>
-                        <Autocomplete.Value />
-                        <Autocomplete.ClearButton />
-                        <Autocomplete.Indicator />
-                    </Autocomplete.Trigger>
-                    <Autocomplete.Popover className="w-80">
+                    <ComboBox.InputGroup>
+                        <Input placeholder="Search animals..." />
+                        <ComboBox.Trigger />
+                    </ComboBox.InputGroup>
+                    <ComboBox.Popover className="w-80">
                         <ListBox renderEmptyState={() => <EmptyState>No results found</EmptyState>}>
                             {perPage.map((item) => (
                                 <ListBox.Item id={String(item)} key={String(item)} textValue={String(item)}>
@@ -52,8 +50,8 @@ function SortBar({ dropdownValue, setDropdownValue,serachValue, setSearchValue }
                                 </ListBox.Item>
                             ))}
                         </ListBox>
-                    </Autocomplete.Popover>
-                </Autocomplete>
+                    </ComboBox.Popover>
+                </ComboBox>
             </div>
             <div className=" order-1 sm:order-2">
                 <TextField className="w-full md:max-w-64" name="name" type="text">
