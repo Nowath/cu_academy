@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Kanit } from "next/font/google";
+import Footer from "@/containers/public/footer";
+import { Toaster } from "sonner";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const kanit = Kanit({
+  subsets: ["latin", "thai"],
+  weight: ["300", "400", "500", "700"],
+  variable: "--font-kanit",
 });
 
 export const metadata: Metadata = {
@@ -22,12 +19,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
-    </html>
-  );
+    return (
+        <html
+        lang="en"
+        className={`${kanit.variable} h-full antialiased`}
+        >
+            <body className={`${kanit.className} min-h-full flex flex-col h-screen w-screen overflow-hidden `}>
+                <div className=" w-full h-full overflow-auto overscroll-none bg-palette1/40">
+                    {children}
+                    <Footer/>
+                </div>
+                <Toaster richColors/>
+            </body>
+        </html>
+    );
 }
