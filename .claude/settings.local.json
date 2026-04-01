@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(find C:UsersnanopDocumentscu_academy -maxdepth 1 -name *.config.* -o -name tsconfig.json)",
-      "Bash(find /c/Users/nanop/Documents/cu_academy/src -type f \\\\\\(-name *.ts -o -name *.tsx \\\\\\) ! -path */node_modules/*)"
-    ]
-  }
-}
