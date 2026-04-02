@@ -1,13 +1,13 @@
 import React from 'react'
 import { Template } from '@/services/assets'
 import StatusCard from '@/components/public/regis/statusCard'
-import RegisForm from '@/components/public/regis/form'
-import { IMemberFilter } from '@/services/listMember/getMember'
+import RegisForm from '@/containers/public/regis/form'
+import { IMemberFilter } from '@/type/member'
 
 function RegisContainer({ template, member }: { template: Template, member: IMemberFilter[] }) {
     return (
         <div className='min-h-screen w-full flex flex-col py-10 px-4 md:px-10 gap-6 items-center'>
-            <h1 className='text-center text-3xl md:text-4xl'>
+            <h1 className='text-center text-3xl md:text-4xl px-2'>
                 ลงทะเบียน <span className='text-palette3'>{template.title}</span>
             </h1>
             <StatusCard now={member.length} max={template.maxRegis} />

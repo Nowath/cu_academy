@@ -1,13 +1,15 @@
 import { createClient } from "@/utils/supabase/client";
-import { IMemberFilter } from "@/type/member";
+import { IMember } from "@/type/member";
 
 const supabase = createClient();
 
-export async function getMember(): Promise<IMemberFilter[]> {
+export async function insertMember(memberData:IMember) {
     const { data, error } = await supabase
-        .from('member_test')
-        .select('id,prefix,name,grade,day1,day2')
-        .eq('pass', true)
+    .from('member_test')
+    .insert(
+        memberData,
+    )
+    .select()
     if (error) {
         console.error(error)
         return []

@@ -4,7 +4,7 @@ import MemberTable from '@/components/public/listMember/memberTable';
 import SortBar from '@/components/public/listMember/sortBar';
 import { Template } from "@/services/assets"
 import { Link } from '@heroui/react';
-import { IMemberFilter } from '@/services/listMember/getMember';
+import { IMemberFilter } from '@/type/member'
 
 function ListMemberContainer({ data, memberData }: { data: Template, memberData: IMemberFilter[] }) {
     const [perPage, setPerPage] = useState(10);
