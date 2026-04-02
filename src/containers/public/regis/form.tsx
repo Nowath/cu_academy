@@ -1,10 +1,11 @@
 "use client"
 import React from 'react'
 import { Card, Button, Form, TextField, Input, Label, Autocomplete, ListBox, FieldError, Checkbox, CheckboxGroup, Description } from "@heroui/react";
-import { PrefixENUM } from '@/type/member';
-import { GradeENUM } from '@/type/member';
+import { PrefixENUM, GradeENUM, IMemberNoAuto } from '@/type/member';
 import FileInput from '@/components/public/regis/fileInput';
-import { insertMember } from '@/services/listMember/insertMember';
+import { insertMember, getPublicURL, removeImage } from '@/services/listMember/insertMember';
+import { v4 } from 'uuid'
+import { toast } from 'sonner';
 
 const DAY_COSTS: Record<string, { label: string; cost: number }> = {
     day1: { label: "วันเสาร์ที่ 21 มีนาคม พ.ศ. 2569", cost: 4000 },
@@ -16,15 +17,38 @@ function RegisForm() {
     const totalCost = selectedDays.reduce((sum, day) => sum + (DAY_COSTS[day]?.cost ?? 0), 0);
     const [slipFile, setSlipFile] = React.useState<File | null>(null);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const data = {
-            ...Object.fromEntries(formData),
-            day1: formData.getAll('day').includes("day1") ? true : false,
-            day2: formData.getAll('day').includes("day2") ? true : false
-        };
-        console.log(data);
+        const filename = v4();
+        try {
+            const imageResult = slipFile ? await getPublicURL({ file: slipFile, fileName: filename }) : null;
+            const imageURL = imageResult ? imageResult.data?.publicUrl ?? '' : '';
+            const dataFilter: IMemberNoAuto = {
+                prefix: formData.get('prefix') as IMemberNoAuto['prefix'],
+                name: formData.get('name') as string,
+                grade: formData.get('grade') as IMemberNoAuto['grade'],
+                school_name: formData.get('school_name') as string,
+                day1: formData.getAll('day').includes("day1"),
+                day2: formData.getAll('day').includes("day2"),
+                image: imageURL,
+                tel: formData.get('tel') as string,
+                parent_name: formData.get('parent_name') as string,
+                parent_email: formData.get('parent_email') as string,
+                second_email: formData.get('second_email') as string,
+                food_allergy: (formData.get('food_allergy') as string) ?? '',
+                pass: false,
+            };
+            await insertMember(dataFilter);
+            toast.success("ลงทะเบียนสำเร็จ");
+        } catch (error) {
+            if (error instanceof Error) {
+                console.log("fawdwd")
+                toast.error(error.message);
+            }
+            console.log(filename)
+            await removeImage({ fileName:filename });
+        }
     };
 
     return (
@@ -128,6 +152,11 @@ function RegisForm() {
                     <TextField name='parent_name' isRequired>
                         <Label>ชื่อผู้ปกครอง (โปรดสะกดชื่อให้ถุูกต้อง)</Label>
                         <Input placeholder='ชื่อ-นามสกุล' variant='secondary' />
+                        <FieldError>โปรดกรอกชื่อผู้ปกครอง</FieldError>
+                    </TextField>
+                    <TextField name='tel' isRequired>
+                        <Label>เบอร์โทรติดต่อ</Label>
+                        <Input maxLength={10} inputMode='numeric' type='text' placeholder='เบอร์โทร' variant='secondary' />
                         <FieldError>โปรดกรอกชื่อผู้ปกครอง</FieldError>
                     </TextField>
                     <TextField name='parent_email' isRequired>

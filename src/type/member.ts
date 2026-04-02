@@ -41,3 +41,19 @@ export interface IMember {
     food_allergy: string;
     pass: boolean;
 }
+
+export interface IMemberNoAuto {
+    prefix: PrefixENUM;
+    name: string;
+    grade: GradeENUM;
+    school_name: string;
+    day1: boolean;
+    day2: boolean;
+    image: string;
+    tel: string;
+    parent_name: string;
+    parent_email: string;
+    second_email: string;
+    food_allergy: string;
+    pass: boolean;
+}
