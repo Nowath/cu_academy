@@ -3,7 +3,7 @@ import { Pagination, Table } from "@heroui/react";
 import { useMemo, useState } from "react";
 import { IoCheckmark } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-import { IMemberFilter } from "@/services/listMember/getMember";
+import { IMemberFilter } from "@/type/member";
 
 const columns = [
     { id: "id", name: "id" },
@@ -18,8 +18,10 @@ interface MemberTableType {
     memberData: IMemberFilter[];
 }
 
-function renderCell(member: IMemberFilter, columnId: string) {
+function renderCell(member: IMemberFilter, columnId: string, index?: number) {
     switch (columnId) {
+        case "id":
+            return index;
         case "name":
             return `${member.prefix}${member.name}`;
         case "day1":
@@ -67,18 +69,18 @@ export default function MemberTable({ perPage = 10, searchValue, memberData }: M
                             </Table.Column>
                         )}
                     </Table.Header>
-                    <Table.Body items={paginatedItems}>
-                        {(member) => (
-                            <Table.Row id={String(member.id)}>
+                    <Table.Body>
+                        {paginatedItems.map((member, index) => (
+                            <Table.Row id={String(member.id)} key={member.id}>
                                 <Table.Collection items={columns}>
                                     {(column) => (
                                         <Table.Cell>
-                                            {renderCell(member, column.id)}
+                                            {renderCell(member, column.id, (safePage - 1) * perPage + index + 1)}
                                         </Table.Cell>
                                     )}
                                 </Table.Collection>
                             </Table.Row>
-                        )}
+                        ))}
                     </Table.Body>
                 </Table.Content>
             </Table.ScrollContainer>

@@ -14,11 +14,11 @@ async function Footer() {
         },
         {
             icon: <BsFillTelephoneFill />,
-            text: "0 2218 2000"
+            text: "063-978-2954"
         },
         {
             icon: <FaEnvelope />,
-            text: "pr@chula.ac.th"
+            text: "Sittiporn.p@chula.ac.th"
         }
     ];
 
