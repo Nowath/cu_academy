@@ -10,7 +10,7 @@ export async function getMember(): Promise<IMemberFilter[]> {
         .eq('pass', true)
     if (error) {
         console.error(error)
-        return []
+        throw new Error("ดึงข้อมูลไม่สำเร็จ")
     }
     return data ?? []
 }

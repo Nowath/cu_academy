@@ -43,7 +43,6 @@ function RegisForm() {
             toast.success("ลงทะเบียนสำเร็จ");
         } catch (error) {
             if (error instanceof Error) {
-                console.log("fawdwd")
                 toast.error(error.message);
             }
             console.log(filename)
