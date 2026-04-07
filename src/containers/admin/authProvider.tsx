@@ -1,27 +1,17 @@
-'use client'
-import React, { useEffect, useState } from 'react'
+import { redirect } from 'next/navigation'
+import { checkLogin } from "@/services/auth"
 import type { ReactNode } from 'react'
-import { useRouter } from 'next/navigation'
-import { createClient } from '@/utils/supabase/client'
 
-function AuthProvider({ children }: { children: ReactNode }) {
-    const router = useRouter()
-    const [authorized, setAuthorized] = useState(false)
+export default async function AuthProvider({ children }: {children:ReactNode }) {
+    const user = await checkLogin()
 
-    useEffect(() => {
-        const supabase = createClient()
-        supabase.auth.getUser().then(({ data: { user } }) => {
-            if (!user) {
-                router.push('/login')
-            } else {
-                setAuthorized(true)
-            }
-        })
-    }, [router])
+    if (!user) {
+        redirect('/login')
+    }
 
-    if (!authorized) return null
-
-    return <div>{children}</div>
+    return (
+        <>
+            {children}
+        </>
+    )
 }
-
-export default AuthProvider
