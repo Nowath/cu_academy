@@ -12,7 +12,7 @@ export async function insertMember(memberData:IMemberNoAuto) {
     .select()
     if (error) {
         console.error(error.message)
-        throw new Error("ลงทะเบียนไม่สำเร็จ")
+        throw new Error(error.message)
     }
     return data
 }

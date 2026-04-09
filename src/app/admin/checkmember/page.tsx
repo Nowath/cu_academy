@@ -1,18 +1,11 @@
-import { redirect } from 'next/navigation'
-import { checkLogin } from "@/services/auth"
-import LogoutButton from '@/components/admin/LogoutButton'
+import CheckMemberContainer from "@/containers/admin/checkMember"
+import { getTemplate } from "@/services/assets";
+import { getAllMember } from "@/services/listMember/getMember";
 
 export default async function Page() {
-    const user = await checkLogin()
-
-    if (!user) {
-        redirect('/login')
-    }
-
+    const data = await getTemplate();
+    const memberData = await getAllMember();
     return (
-        <div>
-            <h1>ยินดีต้อนรับคุณ {user.email}</h1>
-            <LogoutButton />
-        </div>
+        <CheckMemberContainer data={data} memberData={memberData} />
     )
 }

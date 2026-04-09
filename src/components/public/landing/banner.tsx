@@ -12,10 +12,13 @@ interface BannerType{
     banner: string;
     title: string;
     desc: string;
+    poster: string;
+    pr: string;
 }
 
-function Banner({ banner, title, desc }: BannerType) {
+function Banner({ banner, title, desc, poster, pr }: BannerType) {
     const router = useRouter()
+
     return (
         <div className=' w-full h-auto min-h-60 md:min-h-0 lg:aspect-3.5/1 relative flex items-center justify-center px-6 py-20 lg:py-10'>
             <Image loading="eager" alt="banner" src={banner} width={1240} height={400} className='w-full h-full object-cover absolute top-0 left-0' />
@@ -27,8 +30,8 @@ function Banner({ banner, title, desc }: BannerType) {
                 <div className='flex gap-4 flex-wrap justify-center'>
                     <Button size='lg' variant='secondary' onPress={() => router.push("/regis")} className={`text-palette2 px-8`}><GiArchiveRegister /> ลงทะเบียน</Button>
                     <Button size='lg' variant='secondary' onPress={() => router.push("/listmember")} className={`text-palette2 px-8`}><RiFileList3Line /> ตรวจรายชื่อ</Button>
-                    <Button size='lg' variant='secondary' onPress={() => router.push("")} className={`text-palette2 px-8`}><FaDownload/> โหลด poster</Button>
-                    <Button size='lg' variant='secondary' onPress={() => router.push("")} className={`text-palette2 px-8`}><FaDownload/> โหลดโครงการอบรม-PR</Button>
+                    <Button size='lg' variant='secondary' onPress={() => window.open(poster.replace(/"/g, ''), '_blank')} className={`text-palette2 px-8`}><FaDownload/> โหลด poster</Button>
+                    <Button size='lg' variant='secondary' onPress={() => window.open(pr.replace(/"/g, ''), '_blank')} className={`text-palette2 px-8`}><FaDownload/> โหลดโครงการอบรม-PR</Button>
                 </div>
             </div>
         </div>

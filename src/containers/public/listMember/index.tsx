@@ -3,10 +3,12 @@ import React, { useState } from 'react'
 import MemberTable from '@/components/public/listMember/memberTable';
 import SortBar from '@/components/public/listMember/sortBar';
 import { Template } from "@/services/assets"
-import { Link } from '@heroui/react';
-import { IMemberFilter } from '@/type/member'
+import { IMember, IMemberFilter } from '@/type/member';
+import { Button } from '@heroui/react';
+import { useRouter } from 'next/navigation';
 
 function ListMemberContainer({ data, memberData }: { data: Template, memberData: IMemberFilter[] }) {
+    const router = useRouter();
     const [perPage, setPerPage] = useState(10);
     const [searchValue, setSearchValue] = useState("");
 
@@ -18,8 +20,8 @@ function ListMemberContainer({ data, memberData }: { data: Template, memberData:
             <div className='md:w-2/3 flex flex-col gap-8 w-full'>
                 <SortBar serachValue={searchValue} setSearchValue={setSearchValue} dropdownValue={perPage} setDropdownValue={setPerPage} />
                 <MemberTable memberData={memberData} searchValue={searchValue} perPage={perPage} />
-                <div className='w0full justify-end flex'>
-                    <Link className={`text-gray-400`} href='/'>ย้อนกลับ</Link>
+                <div className='w-full flex justify-end'>
+                    <Button variant='ghost' onPress={() => router.push("/")}>ย้อนกลับ</Button>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@ import { Button } from '@heroui/react'
 
 export default function LogoutButton() {
     return (
-        <Button variant='danger-soft' onPress={() => signOut()}>
+        <Button variant='danger' onPress={() => signOut()}>
             ออกจากระบบ
         </Button>
     )
