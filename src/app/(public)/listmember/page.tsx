@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+
 import React from 'react'
 import ListMemberContainer from '@/containers/public/listMember'
 import { getTemplate } from '@/services/assets'
