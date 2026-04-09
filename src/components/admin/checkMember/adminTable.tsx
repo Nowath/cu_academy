@@ -2,6 +2,7 @@
 import { Pagination, Table, Button, Checkbox, useOverlayState } from "@heroui/react";
 import { useMemo, useState } from "react";
 import SlipModal from "@/components/modal/adminTable/slip";
+import InfoModal from "@/components/modal/adminTable/info";
 import { IoCheckmark } from "react-icons/io5";
 import { RxCross2, RxInfoCircled } from "react-icons/rx";
 import { RiBillLine } from "react-icons/ri";
@@ -41,7 +42,7 @@ async function handleUpdateMember({ member }: {member:IMember}) {
     }
 }
 
-function renderCell(member: IMember, columnId: string, onSlipOpen: (m: IMember) => void, index?: number) {
+function renderCell(member: IMember, columnId: string, onSlipOpen: (m: IMember) => void, onInfoOpen: (k: IMember) => void, index?: number) {
     switch (columnId) {
         case "id":
             return index;
@@ -52,11 +53,16 @@ function renderCell(member: IMember, columnId: string, onSlipOpen: (m: IMember) 
         case "day2":
             return member.day2 ? <IoCheckmark className="text-green-600 text-2xl" /> : <RxCross2 className="text-red-600 text-2xl" />;
         case "created_at":
-            return `${dayjs(member.created_at).format("DD/MM/YYYY")}`
+            return (
+                <div className="flex flex-col">
+                    <p>{dayjs(member.created_at).format("DD/MM/YYYY")}</p>
+                    <p>{dayjs(member.created_at).format("hh:mm:ss")}</p>
+                </div>
+            )
         case "action":
             return (
                 <div className=" flex gap-2">
-                    <Button isIconOnly variant="outline"><RxInfoCircled /></Button>
+                    <Button isIconOnly variant="outline" onPress={() => onInfoOpen(member)} ><RxInfoCircled /></Button>
                     <Button isIconOnly variant="outline" onPress={() => onSlipOpen(member)}><RiBillLine /></Button>
                 </div>
             )
@@ -76,11 +82,17 @@ function renderCell(member: IMember, columnId: string, onSlipOpen: (m: IMember) 
 export default function AdminTable({ perPage = 10, searchValue, filterPass, memberData }: MemberTableType) {
     const [page, setPage] = useState(1);
     const slipState = useOverlayState();
+    const infoState = useOverlayState();
     const [selectedMember, setSelectedMember] = useState<IMember | null>(null);
 
     const handleSlipOpen = (member: IMember) => {
         setSelectedMember(member);
         slipState.setOpen(true);
+    };
+
+    const handleInfoOpen = (member: IMember) => {
+        setSelectedMember(member);
+        infoState.setOpen(true);
     };
 
     const filteredMembers = useMemo(() => {
@@ -109,10 +121,11 @@ export default function AdminTable({ perPage = 10, searchValue, filterPass, memb
 
     return (
         <>
-        {selectedMember && <SlipModal state={slipState} member={selectedMember} />}
+            {selectedMember && <SlipModal state={slipState} member={selectedMember} />}
+            {selectedMember && <InfoModal state={infoState} member={selectedMember} />}
         <Table>
             <Table.ScrollContainer>
-                <Table.Content aria-label="Member Table" className="min-w-200">
+                <Table.Content aria-label="Member Table" className="min-w-230">
                     <Table.Header columns={columns}>
                         {(column) => (
                             <Table.Column
@@ -128,7 +141,7 @@ export default function AdminTable({ perPage = 10, searchValue, filterPass, memb
                                 <Table.Collection items={columns}>
                                     {(column) => (
                                         <Table.Cell>
-                                            {renderCell(member, column.id, handleSlipOpen, (safePage - 1) * perPage + index + 1)}
+                                            {renderCell(member, column.id, handleSlipOpen,handleInfoOpen, (safePage - 1) * perPage + index + 1)}
                                         </Table.Cell>
                                     )}
                                 </Table.Collection>

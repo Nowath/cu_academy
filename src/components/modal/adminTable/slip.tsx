@@ -14,7 +14,7 @@ function SlipModal({ state, member }: {state:ReturnType<typeof useOverlayState>,
                 <Modal.Dialog className="sm:max-w-100">
                     <Modal.CloseTrigger/>
                     <Modal.Header className=''>
-                        <Modal.Heading className='text-xl'>slip ของ { member.name }</Modal.Heading>
+                        <Modal.Heading className='text-lg'>slip ของ { member.name }</Modal.Heading>
                     </Modal.Header>
                     <Modal.Body className='w-full flex items-center justify-center p-6'>
                         <Image width={200} height={200} src={member.image} className='w-80' alt='slip_image'/>
