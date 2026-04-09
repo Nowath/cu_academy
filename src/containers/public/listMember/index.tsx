@@ -3,10 +3,9 @@ import React, { useState } from 'react'
 import MemberTable from '@/components/public/listMember/memberTable';
 import SortBar from '@/components/public/listMember/sortBar';
 import { Template } from "@/services/assets"
-import { IMemberFilter } from '@/type/member';
+import { IMember, IMemberFilter } from '@/type/member';
 import { Button } from '@heroui/react';
 import { useRouter } from 'next/navigation';
-import { Basic } from '@/components/public/listMember/testTable';
 
 function ListMemberContainer({ data, memberData }: { data: Template, memberData: IMemberFilter[] }) {
     const router = useRouter();

@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import { Card, TextField, Label, Input, Form, Button, FieldError } from '@heroui/react'
+import { PasswordField } from '@/components/other/passField';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { signInWithEmail } from "@/services/auth"
@@ -38,11 +39,7 @@ function AdminLoginContainer() {
                             <Input type='email' variant='secondary' />
                             <FieldError/>
                         </TextField>
-                        <TextField name='pass' isRequired>
-                            <Label>Password</Label>
-                            <Input type='password' variant='secondary' minLength={3} />
-                            <FieldError>ขั้นต่ำ 3 ตัว</FieldError>
-                        </TextField>
+                        <PasswordField name='pass' label='Password' isRequired/>
                     </Card.Content>
                     <Card.Footer className='justify-center'>
                         <Button type='submit' className='bg-green-400 px-10' size='lg'>Login</Button>
