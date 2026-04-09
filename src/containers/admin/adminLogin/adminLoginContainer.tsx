@@ -34,7 +34,7 @@ function AdminLoginContainer() {
                     <Card.Header className='text-center text-2xl justify-center'>Login Admin</Card.Header>
                     <Card.Content className='pt-6'>
                         <TextField name='email' isRequired>
-                            <Label>Email</Label>  {/* 👈 was "Password" */}
+                            <Label>Email</Label>
                             <Input type='email' variant='secondary' />
                             <FieldError/>
                         </TextField>

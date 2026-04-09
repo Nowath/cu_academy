@@ -58,11 +58,10 @@ export default function MemberTable({ perPage = 10, searchValue, memberData }: M
     return (
         <Table>
             <Table.ScrollContainer>
-                <Table.Content aria-label="Table with pagination" className="w-full">
+                <Table.Content aria-label="Member Table">
                     <Table.Header columns={columns}>
                         {(column) => (
                             <Table.Column
-                                className={column.id === "id" ? "w-14" : ""}
                                 isRowHeader={column.id === "id"}
                             >
                                 {column.name}

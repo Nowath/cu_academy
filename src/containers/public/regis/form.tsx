@@ -1,11 +1,13 @@
 "use client"
 import React from 'react'
-import { Card, Button, Form, TextField, Input, Label, Autocomplete, ListBox, FieldError, Checkbox, CheckboxGroup, Description } from "@heroui/react";
+import { Card, Button, Form, TextField, Input, Label, Autocomplete, ListBox, FieldError, Checkbox, CheckboxGroup, Description, useOverlayState } from "@heroui/react";
 import { PrefixENUM, GradeENUM, IMemberNoAuto } from '@/type/member';
 import FileInput from '@/components/public/regis/fileInput';
 import { insertMember, getPublicURL, removeImage } from '@/services/listMember/insertMember';
 import { v4 } from 'uuid'
 import { toast } from 'sonner';
+import SuccessModal from '@/components/modal/regis/success';
+import FailedModal from '@/components/modal/regis/failed';
 
 const DAY_COSTS: Record<string, { label: string; cost: number }> = {
     day1: { label: "วันเสาร์ที่ 21 มีนาคม พ.ศ. 2569", cost: 4000 },
@@ -14,8 +16,11 @@ const DAY_COSTS: Record<string, { label: string; cost: number }> = {
 
 function RegisForm() {
     const [selectedDays, setSelectedDays] = React.useState<string[]>([]);
+    const [errorr, setError] = React.useState<Error>();
     const totalCost = selectedDays.reduce((sum, day) => sum + (DAY_COSTS[day]?.cost ?? 0), 0);
     const [slipFile, setSlipFile] = React.useState<File | null>(null);
+    const successModal = useOverlayState();
+    const failedModal = useOverlayState();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -40,12 +45,12 @@ function RegisForm() {
                 pass: false,
             };
             await insertMember(dataFilter);
-            toast.success("ลงทะเบียนสำเร็จ");
+            successModal.open();
         } catch (error) {
             if (error instanceof Error) {
-                toast.error(error.message);
+                setError(error);
+                failedModal.open();
             }
-            console.log(filename)
             await removeImage({ fileName:filename });
         }
     };
@@ -123,7 +128,7 @@ function RegisForm() {
                                 <Label>วันอาทิตย์ที่ 22 มีนาคม พ.ศ. 2569 เวลา 9.00 - 16.00 น. (3500 บาท)</Label>
                                 <Description>
                                     <p>ปฏิบัติการ 3: กายวิภาคของสัตว์ (Animal Anatomy Lab) – ศึกษาโครงสร้างอวัยวะภายใน</p>
-                                    <p>ปฏิบัติการ 4: การย้อมสีเซลล์ (Cell staining Lab) – ศึกษาการย้อมสีเซลล์เม็ดเลือดและวิเคราะห์ชนิดของเซลล์เม็ดเลือดขาวด้วยกล้องจุลทรรศน์</p>
+                                    ปฏิบัติการ 4: การย้อมสีเซลล์ (Cell staining Lab) – ศึกษาการย้อมสีเซลล์เม็ดเลือดและวิเคราะห์ชนิดของเซลล์เม็ดเลือดขาวด้วยกล้องจุลทรรศน์<br/>
                                 </Description>
                             </Checkbox.Content>
                         </Checkbox>
@@ -155,7 +160,7 @@ function RegisForm() {
                     </TextField>
                     <TextField name='tel' isRequired>
                         <Label>เบอร์โทรติดต่อ</Label>
-                        <Input maxLength={10} inputMode='numeric' type='text' placeholder='เบอร์โทร' variant='secondary' />
+                        <Input maxLength={10} inputMode='numeric' type='tel' placeholder='เบอร์โทร' variant='secondary' />
                         <FieldError>โปรดกรอกชื่อผู้ปกครอง</FieldError>
                     </TextField>
                     <TextField name='parent_email' isRequired>
@@ -181,6 +186,8 @@ function RegisForm() {
                     <Button type='submit' className=" bg-palette3 text-white px-6">ยืนยัน</Button>
                 </Card.Footer>
             </Card>
+            <SuccessModal state={successModal} />
+            <FailedModal state={failedModal} error={errorr}/>
         </Form>
     )
 }
