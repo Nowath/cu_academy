@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+
 import React from 'react'
 import RegisContainer from '@/containers/public/regis'
 import { getTemplate } from '@/services/assets'
