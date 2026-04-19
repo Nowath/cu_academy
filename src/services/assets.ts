@@ -26,22 +26,5 @@ export async function getTemplate(): Promise<Template> {
         .single();
 
     if (error) throw error;
-
-    const getPublicUrl = (path: string | null) => {
-        if (path != null && path.includes("https")) return path;
-        if (!path) return null;
-
-        const { data } = supabase.storage
-        .from(bucketName)
-        .getPublicUrl(path.trim().replace(/^\//, ''));
-
-        return data.publicUrl;
-    };
-    return {
-        ...template,
-        banner: getPublicUrl(template.banner) as string,
-        logo: getPublicUrl(template.logo),
-        poster: getPublicUrl(template.poster),
-        pr: getPublicUrl(template.pr),
-    };
+    return template;
 }
